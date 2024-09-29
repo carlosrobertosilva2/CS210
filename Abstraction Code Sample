@@ -1,0 +1,12 @@
+public void AddEntry()
+{
+    string prompt = _promptGenerator.GetRandomPrompt();
+    Console.WriteLine($"Prompt: {prompt}");
+    Console.Write("Your response: ");
+    string response = Console.ReadLine();
+    string date = DateTime.Now.ToString("yyyy-MM-dd");
+
+    Entry newEntry = new Entry(date, prompt, response);
+    _entries.Add(newEntry);
+    Console.WriteLine("Entry added successfully.");
+}
