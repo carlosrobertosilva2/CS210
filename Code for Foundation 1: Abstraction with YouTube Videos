@@ -1,0 +1,116 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Create 3-4 videos
+        Video video1 = new Video("Learn C# in 10 Minutes", "John Developer", 600);
+        Video video2 = new Video("Introduction to Object-Oriented Programming", "Jane Coder", 1200);
+        Video video3 = new Video("Advanced C# Techniques", "CodeMaster", 1800);
+
+        // Add comments to video 1
+        video1.AddComment(new Comment("Alice", "Great video!"));
+        video1.AddComment(new Comment("Bob", "Very helpful, thanks!"));
+        video1.AddComment(new Comment("Charlie", "Could use more examples."));
+
+        // Add comments to video 2
+        video2.AddComment(new Comment("Diana", "Loved the explanation."));
+        video2.AddComment(new Comment("Eve", "Really clear, thanks!"));
+        video2.AddComment(new Comment("Frank", "OOP is fun!"));
+
+        // Add comments to video 3
+        video3.AddComment(new Comment("Grace", "Learned a lot."));
+        video3.AddComment(new Comment("Heidi", "Nice pacing of the content."));
+        video3.AddComment(new Comment("Ivan", "Looking forward to more videos like this."));
+
+        // Create a list of videos
+        List<Video> videos = new List<Video> { video1, video2, video3 };
+
+        // Display the details for each video
+        foreach (Video video in videos)
+        {
+            Console.WriteLine($"Title: {video.GetTitle()}");
+            Console.WriteLine($"Author: {video.GetAuthor()}");
+            Console.WriteLine($"Length: {video.GetLengthInSeconds()} seconds");
+            Console.WriteLine($"Number of Comments: {video.GetCommentCount()}");
+
+            // Display the comments for each video
+            foreach (Comment comment in video.GetComments())
+            {
+                Console.WriteLine($"- {comment.GetCommenterName()}: {comment.GetText()}");
+            }
+
+            Console.WriteLine();  // Add a blank line between videos
+        }
+    }
+}
+
+class Video
+{
+    private string title;
+    private string author;
+    private int lengthInSeconds;
+    private List<Comment> comments;
+
+    public Video(string title, string author, int lengthInSeconds)
+    {
+        this.title = title;
+        this.author = author;
+        this.lengthInSeconds = lengthInSeconds;
+        this.comments = new List<Comment>();
+    }
+
+    public string GetTitle()
+    {
+        return title;
+    }
+
+    public string GetAuthor()
+    {
+        return author;
+    }
+
+    public int GetLengthInSeconds()
+    {
+        return lengthInSeconds;
+    }
+
+    public int GetCommentCount()
+    {
+        return comments.Count;
+    }
+
+    public void AddComment(Comment comment)
+    {
+        comments.Add(comment);
+    }
+
+    public List<Comment> GetComments()
+    {
+        return comments;
+    }
+}
+
+class Comment
+{
+    private string commenterName;
+    private string text;
+
+    public Comment(string commenterName, string text)
+    {
+        this.commenterName = commenterName;
+        this.text = text;
+    }
+
+    public string GetCommenterName()
+    {
+        return commenterName;
+    }
+
+    public string GetText()
+    {
+        return text;
+    }
+}
