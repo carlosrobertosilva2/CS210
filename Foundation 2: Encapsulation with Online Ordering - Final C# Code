@@ -1,0 +1,162 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Create some products
+        Product product1 = new Product("Laptop", "P001", 1200, 1);
+        Product product2 = new Product("Mouse", "P002", 25, 2);
+        Product product3 = new Product("Keyboard", "P003", 45, 1);
+
+        // Create an address in the USA
+        Address address1 = new Address("123 Main St", "Los Angeles", "CA", "USA");
+        // Create a customer in the USA
+        Customer customer1 = new Customer("John Doe", address1);
+
+        // Create an order with the products and customer
+        Order order1 = new Order(new List<Product> { product1, product2 }, customer1);
+        
+        // Create another address outside the USA
+        Address address2 = new Address("456 Elm St", "Toronto", "ON", "Canada");
+        // Create another customer outside the USA
+        Customer customer2 = new Customer("Jane Smith", address2);
+
+        // Create another order with different products and customer
+        Order order2 = new Order(new List<Product> { product2, product3 }, customer2);
+
+        // Display packing and shipping labels, and total cost for each order
+        Console.WriteLine("Order 1:");
+        Console.WriteLine(order1.GetPackingLabel());
+        Console.WriteLine(order1.GetShippingLabel());
+        Console.WriteLine($"Total Cost: ${order1.CalculateTotal()}\n");
+
+        Console.WriteLine("Order 2:");
+        Console.WriteLine(order2.GetPackingLabel());
+        Console.WriteLine(order2.GetShippingLabel());
+        Console.WriteLine($"Total Cost: ${order2.CalculateTotal()}");
+    }
+}
+
+class Product
+{
+    private string name;
+    private string product_id;
+    private float price;
+    private int quantity;
+
+    public Product(string name, string product_id, float price, int quantity)
+    {
+        this.name = name;
+        this.product_id = product_id;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public float GetTotalPrice()
+    {
+        return price * quantity;
+    }
+
+    public string GetName()
+    {
+        return name;
+    }
+
+    public string GetProductId()
+    {
+        return product_id;
+    }
+}
+
+class Address
+{
+    private string street;
+    private string city;
+    private string state;
+    private string country;
+
+    public Address(string street, string city, string state, string country)
+    {
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+    }
+
+    public bool IsUSA()
+    {
+        return country == "USA";
+    }
+
+    public string GetFullAddress()
+    {
+        return $"{street}\n{city}, {state}\n{country}";
+    }
+}
+
+class Customer
+{
+    private string name;
+    private Address address;
+
+    public Customer(string name, Address address)
+    {
+        this.name = name;
+        this.address = address;
+    }
+
+    public string GetName()
+    {
+        return name;
+    }
+
+    public bool LivesInUSA()
+    {
+        return address.IsUSA();
+    }
+
+    public string GetAddress()
+    {
+        return address.GetFullAddress();
+    }
+}
+
+class Order
+{
+    private List<Product> products;
+    private Customer customer;
+
+    public Order(List<Product> products, Customer customer)
+    {
+        this.products = products;
+        this.customer = customer;
+    }
+
+    public float CalculateTotal()
+    {
+        float total = 0;
+        foreach (Product product in products)
+        {
+            total += product.GetTotalPrice();
+        }
+        total += customer.LivesInUSA() ? 5 : 35;  // Shipping cost
+        return total;
+    }
+
+    public string GetPackingLabel()
+    {
+        string label = "Packing Label:\n";
+        foreach (Product product in products)
+        {
+            label += $"{product.GetName()} (ID: {product.GetProductId()})\n";
+        }
+        return label;
+    }
+
+    public string GetShippingLabel()
+    {
+        return $"Shipping Label:\n{customer.GetName()}\n{customer.GetAddress()}";
+    }
+}
